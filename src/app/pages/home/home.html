@@ -1,0 +1,11 @@
+<body>
+<div class="autho-container">
+  <h2>Lista de Usuários</h2>
+
+  <ul>
+    <li *ngFor="let user of usuarios">
+      {{ user.name }} - {{ user.email }}
+    </li>
+  </ul>
+</div>
+</body>
