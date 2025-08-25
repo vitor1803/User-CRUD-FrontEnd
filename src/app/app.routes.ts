@@ -14,7 +14,7 @@ export const routes: Routes = [
         data: { mode: 'signup' }
     },
     {
-        path: 'edituser',
+        path: 'edituser/:id',
         component: AuthLayout,
         data: { mode: 'edit' },
         canActivate: [AuthGuard]

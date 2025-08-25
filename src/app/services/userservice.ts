@@ -64,4 +64,8 @@ export class Userservice {
   getFullUsuarios(): Observable<User[]> {
     return this.http.get<User[]>(`${this.apiUrl}/full-usuarios`);
   }
+
+  getUsuarioById(id: number): Observable<User>  {
+    return this.http.get<User>(`${this.apiUrl}/${id}`);
+  }
 }

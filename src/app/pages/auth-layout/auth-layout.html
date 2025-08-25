@@ -17,12 +17,9 @@
       <label for="email">Email:</label>
       <input id="email" type="email" formControlName="email">
 
-      <!-- No edit pode ocultar senha -->
-      <div *ngIf="mode !== 'edit'">
-        <label for="password">Senha:</label>
-        <input id="password" type="password" formControlName="password"
-          [placeholder]="mode === 'login' ? '' : 'Informe pelo menos 6 dígitos'">
-      </div>
+      <label for="password">Senha:</label>
+      <input id="password" type="password" formControlName="password"
+        [placeholder]="mode === 'login' ? '' : 'Informe pelo menos 6 dígitos'">
 
       <button type="submit">
         {{ mode === 'login' ? 'Entrar' : (mode === 'signup' ? 'Cadastrar' : 'Salvar alterações') }}

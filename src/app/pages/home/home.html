@@ -1,11 +1,14 @@
 <body>
-<div class="autho-container">
-  <h2>Lista de Usuários</h2>
+  <div class="autho-container">
+    <h2>Lista de Usuários</h2>
 
-  <ul>
-    <li *ngFor="let user of usuarios">
-      {{ user.id }} - {{ user.name }} - {{user.email}}
-    </li>
-  </ul>
-</div>
+    <ul>
+      <li *ngFor="let user of usuarios" class="user-row">
+        <span class="col">{{ user.id }}</span>
+        <span class="col">{{ user.name }}</span>
+        <span class="col">{{ user.email }}</span>
+        <button [routerLink]="['/edituser', user.id]">Editar</button>
+      </li>
+    </ul>
+  </div>
 </body>

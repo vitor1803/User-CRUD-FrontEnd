@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { RouterLink, Router } from '@angular/router';
-import { UserLoginDTO, Userservice } from '../../services/userservice';
+import { UserLoginDTO, Userservice, User } from '../../services/userservice';
 
 @Component({
   selector: 'app-auth-layout',
@@ -15,6 +15,8 @@ import { UserLoginDTO, Userservice } from '../../services/userservice';
 export class AuthLayout {
   @Input() mode: 'login' | 'signup' | 'edit' = 'login'; 
   form: FormGroup;
+  userId?: number;
+
 
   constructor(private fb: FormBuilder, private activedRoute: ActivatedRoute, private router: Router, private auth: Userservice ) {
     this.form = this.fb.group({
@@ -26,6 +28,25 @@ export class AuthLayout {
   ngOnInit(): void {
     this.activedRoute.data.subscribe(data => {
       this.mode = data['mode'] || 'login';
+    });
+    if (this.mode === 'edit') {
+      this.activedRoute.params.subscribe(params => {
+        this.userId = +params['id'];
+        this.loadUser(this.userId);
+      });
+    }
+  }
+
+  loadUser(id: number) {
+    this.auth.getUsuarioById(id).subscribe({
+      next: (user: User) => {
+        this.form.patchValue({
+          name: user.name,
+          email: user.email,
+          password: '' 
+        });
+      },
+      error: err => console.error('Erro ao carregar usuário', err)
     });
   }
 
@@ -62,7 +83,13 @@ export class AuthLayout {
         }
       });
     } else {
-      console.log('Edição =>', this.form.value);
+      this.auth.updateUsuario(this.userId!, { name, email, password }).subscribe({
+        next: () => {
+          alert('Usuário atualizado com sucesso!');
+          this.router.navigate(['/home']); // volta para a lista
+        },
+        error: err => alert('Erro ao atualizar usuário!')
+      });
     }
   }
   toggleMode() {
