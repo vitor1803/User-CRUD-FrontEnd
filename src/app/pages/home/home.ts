@@ -15,20 +15,14 @@ export class Home implements OnInit {
   constructor(private userService: Userservice) {}
 
   ngOnInit(): void {
-    
     this.carregarUsuarios();
   }
 
   carregarUsuarios(): void {
     this.userService.getUsuarios().subscribe({
-      next: (data) => {
-      this.usuarios = data.map(dto => ({
-        name: dto.nome,  // mapeia 'nome' → 'name'
-        email: dto.email
-      }));
-        console.log('Usuários carregados:', this.usuarios);
-      },
-      error: (err) => {
+      next: (data: User[]) => {
+        this.usuarios = data;
+      }, error: (err) => {
         console.error('Erro ao carregar usuários:', err);
       }
     });

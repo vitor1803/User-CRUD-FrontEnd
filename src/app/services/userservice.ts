@@ -12,14 +12,14 @@ export interface User {
 }
 
 
-export interface LoginDTO {
+export interface UserLoginDTO {
   email: string;
   password: string;
 }
 
 
 export interface UserListDTO {
-  nome: string;
+  name: string;
   email: string;
 }
 
@@ -37,16 +37,28 @@ export class Userservice {
 
   constructor(private http: HttpClient) {}
   
+  login(loginData: UserLoginDTO): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, loginData);
+  }
+  
+  logout() {
+    localStorage.removeItem('token');
+  }
+
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('token'); // ou sessionStorage
+  }
+
   createUsuario(usuario: { name: string, email: string, password: string }): Observable<User> {
     return this.http.post<User>(this.apiUrl, usuario);
   }
-
-  login(loginData: LoginDTO): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, loginData);
+  
+  updateUsuario(id: number, usuario: any): Observable<User> {
+    return this.http.put<User>(`${this.apiUrl}/${id}`, usuario);
   }
-
-  getUsuarios(): Observable<UserListDTO[]> {
-    return this.http.get<UserListDTO[]>(`${this.apiUrl}`);
+  
+  getUsuarios(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.apiUrl}`);
   }
 
   getFullUsuarios(): Observable<User[]> {

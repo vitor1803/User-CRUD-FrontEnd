@@ -1,0 +1,39 @@
+<body>
+  <div class="autho-container">
+    <img class="logo" src="jabil.jpg" alt="Jabil logo">
+
+    <h2>
+      {{ mode === 'login' ? 'Login' : (mode === 'signup' ? 'Cadastro' : 'Editar Usuário') }}
+    </h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      
+      <!-- Só mostra nome no cadastro e edição -->
+      <div *ngIf="mode !== 'login'">
+        <label for="name">Nome:</label>
+        <input id="name" formControlName="name">
+      </div>
+
+      <label for="email">Email:</label>
+      <input id="email" type="email" formControlName="email">
+
+      <!-- No edit pode ocultar senha -->
+      <div *ngIf="mode !== 'edit'">
+        <label for="password">Senha:</label>
+        <input id="password" type="password" formControlName="password"
+          [placeholder]="mode === 'login' ? '' : 'Informe pelo menos 6 dígitos'">
+      </div>
+
+      <button type="submit">
+        {{ mode === 'login' ? 'Entrar' : (mode === 'signup' ? 'Cadastrar' : 'Salvar alterações') }}
+      </button>
+    </form>
+
+    <p *ngIf="mode !== 'edit'">
+      {{ mode === 'login' ? 'Não tem conta?' : 'Já tem conta?' }}
+      <button [routerLink]="mode === 'login' ? '/signup' : '/login'">
+        {{ mode === 'login' ? 'Criar conta' : 'Fazer login' }}
+      </button>
+    </p>
+  </div>
+</body>

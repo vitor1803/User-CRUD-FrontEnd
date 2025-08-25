@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
+import { CanActivate, Router } from '@angular/router';
+import { Userservice } from '../services/userservice'; // seu serviço que guarda o token
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard {
-  constructor(private router: Router) {}
+export class AuthGuard implements CanActivate {
+
+  constructor(private auth: Userservice, private router: Router) {}
 
   canActivate(): boolean {
-    const token = localStorage.getItem('token');
-    if (token) {
-      return true;
+    if (this.auth.isLoggedIn()) {
+      return true; // usuário tem token, permite acessar
     } else {
-      this.router.navigate(['/auth']);
+      this.router.navigate(['/login']); // redireciona para login
       return false;
     }
   }
